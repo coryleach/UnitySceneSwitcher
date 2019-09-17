@@ -1,0 +1,14 @@
+{
+    "name": "com.gameframe.sceneswitcher",
+    "displayName": "Gameframe.SceneSwitcher",
+    "version": "1.0.0",
+    "description": "Unity editor window for quick scene switching.",
+    "unity": "2018.2",
+    "unityRelease": "13f1",
+    "keywords": [],
+    "author": {
+        "name": "Cory Leach",
+        "email": "cory.leach@gmail.com",
+        "url": "https://github.com/coryleach"
+    }
+}

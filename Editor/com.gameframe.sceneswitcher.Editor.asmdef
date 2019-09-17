@@ -1,0 +1,1 @@
+{ "name": "com.gameframe.sceneswitcher.Editor", "references": [ "com.gameframe.sceneswitcher" ], "optionalUnityReferences": [], "includePlatforms": [ "Editor" ], "excludePlatforms": [] }
