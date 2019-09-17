@@ -21,7 +21,7 @@ In the menu select Window -> SceneSwitcher
 </p>
 
 <p>
-  To enable edit mode use the hamber menu at the top right of the window
+  To enable edit mode use the hamburger menu at the top right of the window
 </p>
 
 ```
