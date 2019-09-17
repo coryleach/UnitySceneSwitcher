@@ -14,6 +14,12 @@
 In the menu select Window -> SceneSwitcher
 ```
 
+<p align="center">
+<img width="250" src="https://github.com/coryleach/UnitySceneSwitcher/blob/master/Documentation~/img/Empty.png" />
+<img width="250" src="https://github.com/coryleach/UnitySceneSwitcher/blob/master/Documentation~/img/DefaultMode.png" />
+<img width="250" src="https://github.com/coryleach/UnitySceneSwitcher/blob/master/Documentation~/img/EditMode.png" />
+</p>
+
 ## Author
 
 👤 **Cory Leach**
