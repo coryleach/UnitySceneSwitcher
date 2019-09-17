@@ -1,1 +1,14 @@
-{ "name": "com.gameframe.sceneswitcher.Editor", "references": [ "com.gameframe.sceneswitcher" ], "optionalUnityReferences": [], "includePlatforms": [ "Editor" ], "excludePlatforms": [] }
+{
+    "name": "com.gameframe.sceneswitcher.Editor",
+    "references": [],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}

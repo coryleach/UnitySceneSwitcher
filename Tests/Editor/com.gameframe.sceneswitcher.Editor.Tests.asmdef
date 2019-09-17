@@ -1,1 +1,16 @@
-{ "name": "com.gameframe.sceneswitcher.Editor.Tests", "references": [ "com.gameframe.sceneswitcher" ], "optionalUnityReferences": ["TestAssemblies"], "includePlatforms": [ "Editor" ], "excludePlatforms": [] }
+{
+    "name": "com.gameframe.sceneswitcher.Editor.Tests",
+    "references": [],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
