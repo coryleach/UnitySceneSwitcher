@@ -15,10 +15,20 @@ In the menu select Window -> SceneSwitcher
 ```
 
 <p align="center">
-<img width="250" src="https://github.com/coryleach/UnitySceneSwitcher/blob/master/Documentation~/img/Empty.png" />
-<img width="250" src="https://github.com/coryleach/UnitySceneSwitcher/blob/master/Documentation~/img/DefaultMode.png" />
-<img width="250" src="https://github.com/coryleach/UnitySceneSwitcher/blob/master/Documentation~/img/EditMode.png" />
+  <img width="250" src="https://github.com/coryleach/UnitySceneSwitcher/blob/master/Documentation~/img/Empty.png" />
+  <img width="250" src="https://github.com/coryleach/UnitySceneSwitcher/blob/master/Documentation~/img/DefaultMode.png" />
+  <img width="250" src="https://github.com/coryleach/UnitySceneSwitcher/blob/master/Documentation~/img/EditMode.png" />
 </p>
+
+<p>
+  To enable edit mode use the hamber menu at the top right of the window
+</p>
+
+```
+AutoSort = Moves the most recently clicked button to the top of the list
+Additive = Loads scene additively when the button is clicked
+Close = Closes other scenes
+```
 
 ## Author
 
