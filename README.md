@@ -8,6 +8,20 @@
 
 > Unity editor window for quick scene switching.
 
+## Quick Package Install
+
+#### Using UnityPackageManager (for Unity 2018.3 or later)
+
+Find the manifest.json file in the Packages folder of your project and edit it to look like this:
+```js
+{
+  "dependencies": {
+    "com.gameframe.sceneswitcher": "https://github.com/coryleach/UnitySceneSwitcher.git#1.0.1",
+    ...
+  },
+}
+```
+
 ## Usage
 
 ```sh
@@ -28,19 +42,6 @@ In the menu select Window -> SceneSwitcher
 AutoSort = Moves the most recently clicked button to the top of the list
 Additive = Loads scene additively when the button is clicked
 Close = Closes other scenes
-```
-## Install
-
-#### Using UnityPackageManager (for Unity 2018.3 or later)
-
-Find the manifest.json file in the Packages folder of your project and edit it to look like this:
-```js
-{
-  "dependencies": {
-    "com.gameframe.sceneswitcher": "https://github.com/coryleach/UnitySceneSwitcher.git#1.0.1",
-    ...
-  },
-}
 ```
 
 ##### Requirement
