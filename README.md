@@ -6,6 +6,8 @@
   </a>
 </p>
 
+[![openupm](https://img.shields.io/npm/v/com.gameframe.sceneswitcher?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.gameframe.sceneswitcher/)
+
 > Unity editor window for quick scene switching.
 
 ## Quick Package Install
