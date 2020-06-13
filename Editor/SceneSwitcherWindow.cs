@@ -19,7 +19,7 @@ namespace GameJam.Editor.SceneSwitcher
         private Vector2 _scrollPosition;
 
         [System.Serializable]
-        public class SceneSwitcherData
+        private class SceneSwitcherData
         {
             public List<string> sceneGuids = new List<string>();
             public bool sortRecentToTop = true;
@@ -49,7 +49,7 @@ namespace GameJam.Editor.SceneSwitcher
             PlayerPrefs.SetString(PrefsKey, JsonUtility.ToJson(_sceneSwitcherData));
         }
 
-        private bool _editing = false;
+        private bool _editing;
 
         private void OnGUI()
         {
@@ -75,6 +75,9 @@ namespace GameJam.Editor.SceneSwitcher
                     AddObjects(DragAndDrop.objectReferences);
                     return;
                 case EventType.DragExited:
+                    break;
+                default:
+                    //Other events ignored
                     break;
             }
 
@@ -160,9 +163,10 @@ namespace GameJam.Editor.SceneSwitcher
 
             GUILayout.EndVertical();
 
-            int lineHeight = 18;
+            const int lineHeight = 18;
             if (_editing)
             {
+                //Draw Toggle Buttons
                 GUILayout.BeginHorizontal();
                 _sceneSwitcherData.sortRecentToTop = GUILayout.Toggle(_sceneSwitcherData.sortRecentToTop,
                     new GUIContent("Auto Sort", "Will sort most recently used scenes to the top"),
@@ -173,19 +177,16 @@ namespace GameJam.Editor.SceneSwitcher
                     new GUIContent("Close", "Will close/unload other scenes when additive loading is active"),
                     GUILayout.Height(lineHeight));
                 GUILayout.EndHorizontal();
-            }
-
-            if (_editing)
-            {
+            
+                //Draw Done Button
                 GUILayout.BeginHorizontal();
 
                 GUILayout.FlexibleSpace();
-                GUI.backgroundColor = _editing ? Color.green : Color.red;
-                if (GUILayout.Button(_editing ? "Done" : "Edit", GUILayout.MaxWidth(60)))
+                GUI.backgroundColor = Color.green;
+                if (GUILayout.Button("Done", GUILayout.MaxWidth(60)))
                 {
                     _editing = !_editing;
                 }
-
                 GUI.backgroundColor = Color.white;
 
                 GUILayout.EndHorizontal();
@@ -235,10 +236,9 @@ namespace GameJam.Editor.SceneSwitcher
             }
 
             //Close other scenes
-            Scene otherScene = new Scene();
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
-                otherScene = SceneManager.GetSceneAt(i);
+                var otherScene = SceneManager.GetSceneAt(i);
                 if (otherScene.isLoaded && otherScene != scene)
                 {
                     EditorSceneManager.CloseScene(otherScene, false);
