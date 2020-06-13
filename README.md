@@ -1,6 +1,7 @@
 <h1 align="center">Gameframe.SceneSwitcher 👋</h1>
 
 <!-- BADGE-START -->
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/5e25869cd7c34f218c6483e496038da2)](https://www.codacy.com/manual/coryleach/UnitySceneSwitcher?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=coryleach/UnitySceneSwitcher&amp;utm_campaign=Badge_Grade)
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/coryleach/UnitySceneSwitcher?include_prereleases)
 [![openupm](https://img.shields.io/npm/v/com.gameframe.sceneswitcher?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.gameframe.sceneswitcher/)
 ![GitHub](https://img.shields.io/github/license/coryleach/UnitySceneSwitcher)
