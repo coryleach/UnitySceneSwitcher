@@ -1,12 +1,12 @@
 <h1 align="center">Welcome to com.gameframe.sceneswitcher 👋</h1>
-<p>
-  <img alt="Version" src="https://img.shields.io/badge/version-1.0.1-blue.svg?cacheSeconds=2592000" />
-  <a href="https://twitter.com/coryleach">
-    <img alt="Twitter: coryleach" src="https://img.shields.io/twitter/follow/coryleach.svg?style=social" target="_blank" />
-  </a>
-</p>
 
+<!-- BADGE-START -->
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/coryleach/UnitySceneSwitcher?include_prereleases)
 [![openupm](https://img.shields.io/npm/v/com.gameframe.sceneswitcher?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.gameframe.sceneswitcher/)
+![GitHub](https://img.shields.io/github/license/coryleach/UnitySceneSwitcher)
+
+[![twitter](https://img.shields.io/twitter/follow/coryleach.svg?style=social)](https://twitter.com/coryleach)
+<!-- BADGE-END -->
 
 > Unity editor window for quick scene switching.
 
@@ -27,6 +27,11 @@ Find the manifest.json file in the Packages folder of your project and edit it t
   },
 }
 ```
+
+<!-- DOC-START -->
+<!-- 
+Changes between 'DOC START' and 'DOC END' will not be modified by readme update scripts
+-->
 
 ## Usage
 
@@ -54,6 +59,8 @@ Close = Closes other scenes
 
 * Unity 2018.4 or later (Tested in Unity 2018.4.3f1)
 * No other SDK are required
+
+<!-- DOC-END -->
 
 ## Author
 
