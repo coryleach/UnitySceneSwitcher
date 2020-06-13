@@ -1,4 +1,4 @@
-<h1 align="center">Welcome to com.gameframe.sceneswitcher 👋</h1>
+<h1 align="center">Gameframe.SceneSwitcher 👋</h1>
 
 <!-- BADGE-START -->
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/coryleach/UnitySceneSwitcher?include_prereleases)
@@ -8,21 +8,22 @@
 [![twitter](https://img.shields.io/twitter/follow/coryleach.svg?style=social)](https://twitter.com/coryleach)
 <!-- BADGE-END -->
 
-> Unity editor window for quick scene switching.
+Unity editor window for quick scene switching.
 
 ## Quick Package Install
 
 #### Using UnityPackageManager (for Unity 2019.3 or later)
 Open the package manager window (menu: Window > Package Manager)<br/>
 Select "Add package from git URL...", fill in the pop-up with the following link:<br/>
-https://github.com/coryleach/UnitySceneSwitcher.git#1.0.1<br/>
+https://github.com/coryleach/UnitySceneSwitcher.git#1.0.2<br/>
 
-#### Using UnityPackageManager (for Unity 2018.3 or later)
+#### Using UnityPackageManager (for Unity 2019.1 or later)
+
 Find the manifest.json file in the Packages folder of your project and edit it to look like this:
 ```js
 {
   "dependencies": {
-    "com.gameframe.sceneswitcher": "https://github.com/coryleach/UnitySceneSwitcher.git#1.0.1",
+    "com.gameframe.sceneswitcher": "https://github.com/coryleach/UnitySceneSwitcher.git#1.0.2",
     ...
   },
 }
@@ -69,9 +70,10 @@ Close = Closes other scenes
 * Twitter: [@coryleach](https://twitter.com/coryleach)
 * Github: [@coryleach](https://github.com/coryleach)
 
+
 ## Show your support
 
 Give a ⭐️ if this project helped you!
 
 ***
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
+_This README was generated with ❤️ by [Gameframe.Packages](https://github.com/coryleach/unitypackages)_
