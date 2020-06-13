@@ -19,7 +19,7 @@ namespace GameJam.Editor.SceneSwitcher
         private Vector2 _scrollPosition;
 
         [System.Serializable]
-        public class SceneSwitcherData
+        private class SceneSwitcherData
         {
             public List<string> sceneGuids = new List<string>();
             public bool sortRecentToTop = true;
@@ -75,6 +75,9 @@ namespace GameJam.Editor.SceneSwitcher
                     AddObjects(DragAndDrop.objectReferences);
                     return;
                 case EventType.DragExited:
+                    break;
+                default:
+                    //Other events ignored
                     break;
             }
 
@@ -235,10 +238,9 @@ namespace GameJam.Editor.SceneSwitcher
             }
 
             //Close other scenes
-            Scene otherScene = new Scene();
             for (int i = 0; i < SceneManager.sceneCount; i++)
             {
-                otherScene = SceneManager.GetSceneAt(i);
+                var otherScene = SceneManager.GetSceneAt(i);
                 if (otherScene.isLoaded && otherScene != scene)
                 {
                     EditorSceneManager.CloseScene(otherScene, false);
