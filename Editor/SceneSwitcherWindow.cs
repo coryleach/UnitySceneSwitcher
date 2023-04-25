@@ -21,10 +21,27 @@ namespace GameJam.Editor.SceneSwitcher
         [System.Serializable]
         private class SceneSwitcherData
         {
-            public List<string> sceneGuids = new List<string>();
+            public List<SceneData> scenes = new List<SceneData>();
             public bool sortRecentToTop = true;
             public bool loadAdditive = true;
             public bool closeScenes = true;
+
+            public void AddScene(string guid)
+            {
+                if (!scenes.Exists((scene) => scene.guid == guid))
+                {
+                    var sceneData = new SceneData() { guid = guid, color = Color.white };
+                    
+                    scenes.Add(sceneData);
+                }
+            }
+
+            [System.Serializable]
+            internal class SceneData
+            {
+                public string guid;
+                public Color color;
+            }
         }
 
         private SceneSwitcherData _sceneSwitcherData = new SceneSwitcherData();
@@ -81,7 +98,7 @@ namespace GameJam.Editor.SceneSwitcher
                     break;
             }
 
-            if (_sceneSwitcherData.sceneGuids.Count > 0)
+            if (_sceneSwitcherData.scenes.Count > 0)
             {
                 SceneListGui();
             }
@@ -109,7 +126,7 @@ namespace GameJam.Editor.SceneSwitcher
             _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
 
             GUILayout.BeginVertical(new GUIStyle("GroupBox"));
-            foreach (var guid in _sceneSwitcherData.sceneGuids)
+            foreach (var sceneData in _sceneSwitcherData.scenes)
             {
                 GUILayout.BeginHorizontal();
 
@@ -117,21 +134,25 @@ namespace GameJam.Editor.SceneSwitcher
                 {
                     if (GUILayout.Button("↑", GUILayout.MaxWidth(20)))
                     {
-                        MoveUp(guid);
+                        MoveUp(sceneData);
                         GUILayout.EndHorizontal();
                         break;
                     }
                     else if (GUILayout.Button("↓", GUILayout.MaxWidth(20)))
                     {
-                        MoveDown(guid);
+                        MoveDown(sceneData);
                         GUILayout.EndHorizontal();
                         break; 
                     }
                 }
 
-                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var path = AssetDatabase.GUIDToAssetPath(sceneData.guid);
+                var preColorBG = GUI.backgroundColor;
+                GUI.backgroundColor = sceneData.color;
+                
                 if (GUILayout.Button(System.IO.Path.GetFileNameWithoutExtension(path)))
                 {
+                    GUI.backgroundColor = preColorBG;
                     // Give user option to save/cancel
                     if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
                     {
@@ -142,22 +163,26 @@ namespace GameJam.Editor.SceneSwitcher
                     SwitchToScene(path);
                     if (_sceneSwitcherData.sortRecentToTop)
                     {
-                        MoveToTop(guid);
+                        MoveToTop(sceneData);
                     }
 
                     GUILayout.EndHorizontal();
                     break;
                 }
 
+                GUI.backgroundColor = preColorBG;
+
                 if (_editing)
                 {
                     GUI.backgroundColor = Color.red;
                     if (GUILayout.Button("X", GUILayout.MaxWidth(20)))
                     {
-                        _sceneSwitcherData.sceneGuids.Remove(guid);
+                        _sceneSwitcherData.scenes.Remove(sceneData);
                         GUILayout.EndHorizontal();
                         break;
                     }
+
+                    sceneData.color = EditorGUILayout.ColorField(sceneData.color, GUILayout.Width(40f));
 
                     GUI.backgroundColor = Color.white;
                 }
@@ -199,34 +224,34 @@ namespace GameJam.Editor.SceneSwitcher
             EditorGUILayout.EndScrollView();
         }
 
-        private void MoveToTop(string guid)
+        private void MoveToTop(SceneSwitcherData.SceneData guid)
         {
-            _sceneSwitcherData.sceneGuids.Remove(guid);
-            _sceneSwitcherData.sceneGuids.Insert(0, guid);
+            _sceneSwitcherData.scenes.Remove(guid);
+            _sceneSwitcherData.scenes.Insert(0, guid);
         }
 
-        private void MoveUp(string guid)
+        private void MoveUp(SceneSwitcherData.SceneData guid)
         {
-            var index = _sceneSwitcherData.sceneGuids.IndexOf(guid);
-            _sceneSwitcherData.sceneGuids.RemoveAt(index);
+            var index = _sceneSwitcherData.scenes.IndexOf(guid);
+            _sceneSwitcherData.scenes.RemoveAt(index);
             if (index > 0)
             {
                 index--;
             }
 
-            _sceneSwitcherData.sceneGuids.Insert(index, guid);
+            _sceneSwitcherData.scenes.Insert(index, guid);
         }
 
-        private void MoveDown(string guid)
+        private void MoveDown(SceneSwitcherData.SceneData guid)
         {
-            var index = _sceneSwitcherData.sceneGuids.IndexOf(guid);
-            _sceneSwitcherData.sceneGuids.RemoveAt(index);
-            if (index < _sceneSwitcherData.sceneGuids.Count)
+            var index = _sceneSwitcherData.scenes.IndexOf(guid);
+            _sceneSwitcherData.scenes.RemoveAt(index);
+            if (index < _sceneSwitcherData.scenes.Count)
             {
                 index++;
             }
 
-            _sceneSwitcherData.sceneGuids.Insert(index, guid);
+            _sceneSwitcherData.scenes.Insert(index, guid);
         }
 
         private void SwitchToScene(string path)
@@ -264,10 +289,7 @@ namespace GameJam.Editor.SceneSwitcher
                 var path = AssetDatabase.GetAssetPath(sceneAsset);
                 var guid = AssetDatabase.AssetPathToGUID(path);
 
-                if (!_sceneSwitcherData.sceneGuids.Contains(guid))
-                {
-                    _sceneSwitcherData.sceneGuids.Add(guid);
-                }
+                _sceneSwitcherData.AddScene(guid);
             }
         }
 
