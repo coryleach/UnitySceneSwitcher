@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -118,13 +118,14 @@ namespace GameJam.Editor.SceneSwitcher
                     if (GUILayout.Button("↑", GUILayout.MaxWidth(20)))
                     {
                         MoveUp(guid);
-                        return;
+                        GUILayout.EndHorizontal();
+                        break;
                     }
-
-                    if (GUILayout.Button("↓", GUILayout.MaxWidth(20)))
+                    else if (GUILayout.Button("↓", GUILayout.MaxWidth(20)))
                     {
                         MoveDown(guid);
-                        return;
+                        GUILayout.EndHorizontal();
+                        break; 
                     }
                 }
 
@@ -134,7 +135,8 @@ namespace GameJam.Editor.SceneSwitcher
                     // Give user option to save/cancel
                     if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
                     {
-                        return;
+                        GUILayout.EndHorizontal();
+                        break;
                     }
 
                     SwitchToScene(path);
@@ -143,7 +145,8 @@ namespace GameJam.Editor.SceneSwitcher
                         MoveToTop(guid);
                     }
 
-                    return;
+                    GUILayout.EndHorizontal();
+                    break;
                 }
 
                 if (_editing)
@@ -152,7 +155,8 @@ namespace GameJam.Editor.SceneSwitcher
                     if (GUILayout.Button("X", GUILayout.MaxWidth(20)))
                     {
                         _sceneSwitcherData.sceneGuids.Remove(guid);
-                        return;
+                        GUILayout.EndHorizontal();
+                        break;
                     }
 
                     GUI.backgroundColor = Color.white;
