@@ -1,15 +1,1 @@
-{
-  "name": "com.gameframe.sceneswitcher",
-  "displayName": "Gameframe.SceneSwitcher",
-  "version": "1.0.2",
-  "description": "Unity editor window for quick scene switching.",
-  "keywords": [],
-  "author": {
-    "name": "Cory Leach",
-    "email": "cory.leach@gmail.com",
-    "url": "https://github.com/coryleach",
-    "github": "coryleach",
-    "twitter": "coryleach"
-  },
-  "repositoryName": "UnitySceneSwitcher"
-}
+{"name":"com.gameframe.sceneswitcher","displayName":"Gameframe.SceneSwitcher","version":"1.0.3","description":"Unity editor window for quick scene switching.","keywords":[],"author":{"name":"Cory Leach","email":"cory.leach@gmail.com","url":"https://github.com/coryleach","github":"coryleach","twitter":"coryleach","kofi":""},"repositoryName":"UnitySceneSwitcher"}

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -21,10 +21,37 @@ namespace GameJam.Editor.SceneSwitcher
         [System.Serializable]
         private class SceneSwitcherData
         {
-            public List<string> sceneGuids = new List<string>();
+            public List<SceneData> scenes = new List<SceneData>();
             public bool sortRecentToTop = true;
             public bool loadAdditive = true;
             public bool closeScenes = true;
+
+            public void AddScene(string guid)
+            {
+                if (!scenes.Exists((scene) => scene.guid == guid))
+                {
+                    var sceneData = new SceneData() { guid = guid, color = Color.white };
+
+                    scenes.Add(sceneData);
+                }
+            }
+
+            [System.Serializable]
+            internal class SceneData
+            {
+                public string guid;
+                public Color color;
+                public bool foldout;
+                public BooleanOverride loadAdditive;
+                public BooleanOverride closeScenes;
+            }
+        }
+
+        public enum  BooleanOverride
+        {
+            Default = 0,
+            Yes = 1,
+            No = 2
         }
 
         private SceneSwitcherData _sceneSwitcherData = new SceneSwitcherData();
@@ -44,6 +71,11 @@ namespace GameJam.Editor.SceneSwitcher
         }
 
         private void OnDisable()
+        {
+            SaveState();
+        }
+
+        private void SaveState()
         {
             //Save State
             PlayerPrefs.SetString(PrefsKey, JsonUtility.ToJson(_sceneSwitcherData));
@@ -81,7 +113,7 @@ namespace GameJam.Editor.SceneSwitcher
                     break;
             }
 
-            if (_sceneSwitcherData.sceneGuids.Count > 0)
+            if (_sceneSwitcherData.scenes.Count > 0)
             {
                 SceneListGui();
             }
@@ -107,67 +139,117 @@ namespace GameJam.Editor.SceneSwitcher
         private void SceneListGui()
         {
             _scrollPosition = EditorGUILayout.BeginScrollView(_scrollPosition);
+            const int lineHeight = 18;
 
             GUILayout.BeginVertical(new GUIStyle("GroupBox"));
-            foreach (var guid in _sceneSwitcherData.sceneGuids)
+            foreach (var sceneData in _sceneSwitcherData.scenes)
             {
+                if (sceneData.foldout)
+                {
+                    GUILayout.BeginVertical(EditorStyles.helpBox);
+                }
+                else
+                {
+                    GUILayout.BeginVertical();
+                }
+
                 GUILayout.BeginHorizontal();
 
                 if (_editing)
                 {
                     if (GUILayout.Button("↑", GUILayout.MaxWidth(20)))
                     {
-                        MoveUp(guid);
-                        return;
+                        MoveUp(sceneData);
+                        GUILayout.EndHorizontal();
+                        GUILayout.EndVertical();
+                        break;
                     }
-
-                    if (GUILayout.Button("↓", GUILayout.MaxWidth(20)))
+                    else if (GUILayout.Button("↓", GUILayout.MaxWidth(20)))
                     {
-                        MoveDown(guid);
-                        return;
+                        MoveDown(sceneData);
+                        GUILayout.EndHorizontal();
+                        GUILayout.EndVertical();
+                        break;
                     }
                 }
 
-                var path = AssetDatabase.GUIDToAssetPath(guid);
+                var path = AssetDatabase.GUIDToAssetPath(sceneData.guid);
+                var preColorBG = GUI.backgroundColor;
+                GUI.backgroundColor = sceneData.color;
+
                 if (GUILayout.Button(System.IO.Path.GetFileNameWithoutExtension(path)))
                 {
+                    GUI.backgroundColor = preColorBG;
                     // Give user option to save/cancel
                     if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
                     {
-                        return;
+                        GUILayout.EndHorizontal();
+                        GUILayout.EndVertical();
+                        break;
                     }
 
-                    SwitchToScene(path);
+                    SwitchToScene(sceneData, path);
                     if (_sceneSwitcherData.sortRecentToTop)
                     {
-                        MoveToTop(guid);
+                        MoveToTop(sceneData);
                     }
 
-                    return;
+                    GUILayout.EndHorizontal();
+                    GUILayout.EndVertical();
+                    break;
                 }
+
+                GUI.backgroundColor = preColorBG;
 
                 if (_editing)
                 {
                     GUI.backgroundColor = Color.red;
-                    if (GUILayout.Button("X", GUILayout.MaxWidth(20)))
+                    if (GUILayout.Button(EditorGUIUtility.IconContent("d_TreeEditor.Trash"), GUILayout.Width(30)))
                     {
-                        _sceneSwitcherData.sceneGuids.Remove(guid);
-                        return;
+                        _sceneSwitcherData.scenes.Remove(sceneData);
+                        SaveState();
+                        GUILayout.EndHorizontal();
+                        GUILayout.EndVertical();
+                        break;
                     }
-
                     GUI.backgroundColor = Color.white;
+
+                    var arrowTexture = sceneData.foldout ? EditorGUIUtility.IconContent("d_scrolldown") : EditorGUIUtility.IconContent("d_scrollup");
+                    if (GUILayout.Button(arrowTexture, GUILayout.Width(25), GUILayout.Height(20)))
+                    {
+                        sceneData.foldout = !sceneData.foldout;
+                    }
                 }
 
                 GUILayout.EndHorizontal();
+
+                if (_editing && sceneData.foldout)
+                {
+                    GUILayout.BeginVertical();
+
+                    var temp = EditorGUIUtility.labelWidth;
+                    EditorGUIUtility.labelWidth = 100;
+
+                    sceneData.color = EditorGUILayout.ColorField("Button Tint",sceneData.color);
+                    sceneData.loadAdditive = (BooleanOverride)EditorGUILayout.EnumPopup(new GUIContent("Additive Load", "Loads scenes additively"),sceneData.loadAdditive);
+                    sceneData.closeScenes = (BooleanOverride)EditorGUILayout.EnumPopup(new GUIContent("Close Others", "Will close/unload other scenes when additive loading is active"),sceneData.closeScenes);
+
+                    EditorGUIUtility.labelWidth = temp;
+
+                    GUILayout.EndVertical();
+                }
+
+                GUILayout.EndVertical();
+
             }
 
             GUILayout.EndVertical();
 
-            const int lineHeight = 18;
             if (_editing)
             {
                 //Draw Toggle Buttons
-                GUILayout.BeginHorizontal();
+                GUILayout.Label("Default Settings");
+                GUILayout.BeginHorizontal(new GUIStyle("GroupBox"));
                 _sceneSwitcherData.sortRecentToTop = GUILayout.Toggle(_sceneSwitcherData.sortRecentToTop,
                     new GUIContent("Auto Sort", "Will sort most recently used scenes to the top"),
                     GUILayout.Height(lineHeight));
@@ -177,7 +259,7 @@ namespace GameJam.Editor.SceneSwitcher
                     new GUIContent("Close", "Will close/unload other scenes when additive loading is active"),
                     GUILayout.Height(lineHeight));
                 GUILayout.EndHorizontal();
-            
+
                 //Draw Done Button
                 GUILayout.BeginHorizontal();
 
@@ -190,47 +272,53 @@ namespace GameJam.Editor.SceneSwitcher
                 GUI.backgroundColor = Color.white;
 
                 GUILayout.EndHorizontal();
+
+                EditorGUILayout.Space();
+                EditorGUILayout.Space();
+
             }
-            
+
             EditorGUILayout.EndScrollView();
         }
 
-        private void MoveToTop(string guid)
+        private void MoveToTop(SceneSwitcherData.SceneData guid)
         {
-            _sceneSwitcherData.sceneGuids.Remove(guid);
-            _sceneSwitcherData.sceneGuids.Insert(0, guid);
+            _sceneSwitcherData.scenes.Remove(guid);
+            _sceneSwitcherData.scenes.Insert(0, guid);
         }
 
-        private void MoveUp(string guid)
+        private void MoveUp(SceneSwitcherData.SceneData guid)
         {
-            var index = _sceneSwitcherData.sceneGuids.IndexOf(guid);
-            _sceneSwitcherData.sceneGuids.RemoveAt(index);
+            var index = _sceneSwitcherData.scenes.IndexOf(guid);
+            _sceneSwitcherData.scenes.RemoveAt(index);
             if (index > 0)
             {
                 index--;
             }
 
-            _sceneSwitcherData.sceneGuids.Insert(index, guid);
+            _sceneSwitcherData.scenes.Insert(index, guid);
         }
 
-        private void MoveDown(string guid)
+        private void MoveDown(SceneSwitcherData.SceneData guid)
         {
-            var index = _sceneSwitcherData.sceneGuids.IndexOf(guid);
-            _sceneSwitcherData.sceneGuids.RemoveAt(index);
-            if (index < _sceneSwitcherData.sceneGuids.Count)
+            var index = _sceneSwitcherData.scenes.IndexOf(guid);
+            _sceneSwitcherData.scenes.RemoveAt(index);
+            if (index < _sceneSwitcherData.scenes.Count)
             {
                 index++;
             }
 
-            _sceneSwitcherData.sceneGuids.Insert(index, guid);
+            _sceneSwitcherData.scenes.Insert(index, guid);
         }
 
-        private void SwitchToScene(string path)
+        private void SwitchToScene(SceneSwitcherData.SceneData sceneData, string path)
         {
-            var scene = EditorSceneManager.OpenScene(path,
-                _sceneSwitcherData.loadAdditive ? OpenSceneMode.Additive : OpenSceneMode.Single);
+            var closeScenes = sceneData.closeScenes == BooleanOverride.Default ? _sceneSwitcherData.closeScenes : (sceneData.closeScenes == BooleanOverride.Yes);
+            var loadAdditively = sceneData.loadAdditive == BooleanOverride.Default ? _sceneSwitcherData.loadAdditive : (sceneData.loadAdditive == BooleanOverride.Yes);
 
-            if (!_sceneSwitcherData.closeScenes)
+            var scene = EditorSceneManager.OpenScene(path, loadAdditively ? OpenSceneMode.Additive : OpenSceneMode.Single);
+
+            if (!closeScenes)
             {
                 return;
             }
@@ -260,11 +348,9 @@ namespace GameJam.Editor.SceneSwitcher
                 var path = AssetDatabase.GetAssetPath(sceneAsset);
                 var guid = AssetDatabase.AssetPathToGUID(path);
 
-                if (!_sceneSwitcherData.sceneGuids.Contains(guid))
-                {
-                    _sceneSwitcherData.sceneGuids.Add(guid);
-                }
+                _sceneSwitcherData.AddScene(guid);
             }
+            SaveState();
         }
 
         private static bool IsValidSelection(IEnumerable<Object> objects)
@@ -286,6 +372,6 @@ namespace GameJam.Editor.SceneSwitcher
         }
 
         #endregion
-        
+
     }
 }

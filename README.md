@@ -19,7 +19,7 @@ Unity editor window for quick scene switching.
 #### Using UnityPackageManager (for Unity 2019.3 or later)
 Open the package manager window (menu: Window > Package Manager)<br/>
 Select "Add package from git URL...", fill in the pop-up with the following link:<br/>
-https://github.com/coryleach/UnitySceneSwitcher.git#1.0.2<br/>
+https://github.com/coryleach/UnitySceneSwitcher.git#1.0.3<br/>
 
 #### Using UnityPackageManager (for Unity 2019.1 or later)
 
@@ -27,7 +27,7 @@ Find the manifest.json file in the Packages folder of your project and edit it t
 ```js
 {
   "dependencies": {
-    "com.gameframe.sceneswitcher": "https://github.com/coryleach/UnitySceneSwitcher.git#1.0.2",
+    "com.gameframe.sceneswitcher": "https://github.com/coryleach/UnitySceneSwitcher.git#1.0.3",
     ...
   },
 }
@@ -76,8 +76,8 @@ Close = Closes other scenes
 
 
 ## Show your support
-
 Give a ⭐️ if this project helped you!
+
 
 ***
 _This README was generated with ❤️ by [Gameframe.Packages](https://github.com/coryleach/unitypackages)_
