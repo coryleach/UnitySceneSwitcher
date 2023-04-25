@@ -31,7 +31,7 @@ namespace GameJam.Editor.SceneSwitcher
                 if (!scenes.Exists((scene) => scene.guid == guid))
                 {
                     var sceneData = new SceneData() { guid = guid, color = Color.white };
-                    
+
                     scenes.Add(sceneData);
                 }
             }
@@ -61,6 +61,11 @@ namespace GameJam.Editor.SceneSwitcher
         }
 
         private void OnDisable()
+        {
+            SaveState();
+        }
+
+        private void SaveState()
         {
             //Save State
             PlayerPrefs.SetString(PrefsKey, JsonUtility.ToJson(_sceneSwitcherData));
@@ -142,14 +147,14 @@ namespace GameJam.Editor.SceneSwitcher
                     {
                         MoveDown(sceneData);
                         GUILayout.EndHorizontal();
-                        break; 
+                        break;
                     }
                 }
 
                 var path = AssetDatabase.GUIDToAssetPath(sceneData.guid);
                 var preColorBG = GUI.backgroundColor;
                 GUI.backgroundColor = sceneData.color;
-                
+
                 if (GUILayout.Button(System.IO.Path.GetFileNameWithoutExtension(path)))
                 {
                     GUI.backgroundColor = preColorBG;
@@ -178,6 +183,7 @@ namespace GameJam.Editor.SceneSwitcher
                     if (GUILayout.Button("X", GUILayout.MaxWidth(20)))
                     {
                         _sceneSwitcherData.scenes.Remove(sceneData);
+                        SaveState();
                         GUILayout.EndHorizontal();
                         break;
                     }
@@ -206,7 +212,7 @@ namespace GameJam.Editor.SceneSwitcher
                     new GUIContent("Close", "Will close/unload other scenes when additive loading is active"),
                     GUILayout.Height(lineHeight));
                 GUILayout.EndHorizontal();
-            
+
                 //Draw Done Button
                 GUILayout.BeginHorizontal();
 
@@ -220,7 +226,7 @@ namespace GameJam.Editor.SceneSwitcher
 
                 GUILayout.EndHorizontal();
             }
-            
+
             EditorGUILayout.EndScrollView();
         }
 
@@ -291,6 +297,7 @@ namespace GameJam.Editor.SceneSwitcher
 
                 _sceneSwitcherData.AddScene(guid);
             }
+            SaveState();
         }
 
         private static bool IsValidSelection(IEnumerable<Object> objects)
@@ -312,6 +319,6 @@ namespace GameJam.Editor.SceneSwitcher
         }
 
         #endregion
-        
+
     }
 }
